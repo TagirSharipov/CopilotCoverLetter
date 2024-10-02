@@ -1,19 +1,22 @@
 "use client";
-import { CopilotProvider } from "@copilotkit/react-core";
-import { CopilotSidebarUIProvider } from "@copilotkit/react-ui";
+import { CopilotKit } from "@copilotkit/react-core";
 import "@copilotkit/react-textarea/styles.css";
 import "@copilotkit/react-ui/styles.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CoverLetterAndResume } from "../components/resume";
+import { CopilotContextProvider } from "@/context/CopilotContextProvider";
 
-function buildResume() {
+const apiKey = process.env.NEXT_PUBLIC_COPILOT_CLOUD_API_KEY;
+
+function BuildResume() {
+  const [input, setInput] = useState("");
   return (
-    <CopilotProvider chatApiEndpoint="./../api/copilotkit/chat">
-      <CopilotSidebarUIProvider>
+    <CopilotKit publicApiKey={apiKey}>
+      <CopilotContextProvider>
         <CoverLetterAndResume />
-      </CopilotSidebarUIProvider>
-    </CopilotProvider>
+      </CopilotContextProvider>
+    </CopilotKit>
   );
 }
 
-export default buildResume;
+export default BuildResume;

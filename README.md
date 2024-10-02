@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI-Powered Resume Builder
 
-## Getting Started
+CopilotKit-Powered Resume and Cover Letter Generator is a web application that helps users create and manage their resumes and cover letters. The application leverages AI to provide suggestions and improvements for your resume and cover letter content.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Resume Upload**: Upload your resume in PDF format and extract text content.
+- **Cover Letter Creation**: Create and edit cover letters to apply for a job with AI assistance.
+- **Real-time Suggestions**: Get real-time suggestions and improvements for your resume and cover letter.
+- **Clipboard Copy**: Easily copy your cover letter to the clipboard.
+- **PDF download**: Easily download your cover letter and resume to your computer.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage Scenario
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Load Your CV**: Upload your resume in PDF format to the application.
+2. **Find a Job Vacancy**: Search for a job vacancy that you are interested in.
+3. **Copy and Paste Job Description**: Copy the job description from the job listing and paste it into the application.
+4. **Generate Cover Letter**: Use the AI-powered tool to generate a cover letter tailored to the job you are applying for.
+5. **Master Your Resume or Cover Letter**: Utilize CopilotChat to refine and perfect your resume or cover letter with expert suggestions.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Technologies Used
 
-## Learn More
+- **CopilotKit**: framework for integrating powerful AI Copilots
+- **React**: Frontend library for building user interfaces.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Headless UI**: Unstyled, fully accessible UI components.
+- **React Toastify**: Library for toast notifications.
+- **Axios**: Promise-based HTTP client for making API requests.
+- **React Markdown**: Component for rendering Markdown content.
+- **Heroicons**: Beautiful hand-crafted SVG icons.
 
-To learn more about Next.js, take a look at the following resources:
+## Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```sh
+   git clone https://github.com/yourusername/ai-powered-resume-builder.git
+   cd ai-powered-resume-builder
+   ```

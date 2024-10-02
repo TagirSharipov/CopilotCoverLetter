@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 // Environment variables for GitHub API token and user details
-const GITHUB_TOKEN = "Your GitHub Personal Access Token";
-const GITHUB_USERNAME = "Your GitHub Username";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_USERNAME = process.env.GITHUB_USERNAME;
 
 // Axios instance for GitHub GraphQL API
 const githubApi = axios.create({
@@ -24,7 +24,7 @@ const getUserAndReposQuery = `
       email
       company
       bio
-      repositories(first: 3, orderBy: {field: CREATED_AT, direction: DESC}) {
+      repositories(first: 5, orderBy: {field: CREATED_AT, direction: DESC}) {
         edges {
           node {
             name
@@ -60,11 +60,11 @@ export async function GET(request: any) {
       company: userData.company,
       bio: userData.bio,
       repositories: userData.repositories.edges.map((repo: any) => ({
-        name: repo.node.name,
+        name: repo.node?.name,
         url: repo.node.url,
         created: repo.node.createdAt,
         description: repo.node.description,
-        language: repo.node.primaryLanguage.name,
+        language: repo.node.primaryLanguage?.name,
         stars: repo.node.stargazers.totalCount,
       })),
     };

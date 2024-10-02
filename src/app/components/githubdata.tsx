@@ -1,36 +1,25 @@
-"use client";
+import React from "react";
+import { GithubProfile } from "../hooks/useGithub";
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+const GithubData = ({
+  data,
+  isLoading = false,
+}: {
+  data?: GithubProfile;
+  isLoading: boolean;
+}) => {
+  return (
+    <div className="max-w-[250px] w-full p-4 rounded-lg bg-white">
+      <h2>GitHub</h2>
+      <div className="flex items-center">
+        <span className="py4">
+          {isLoading
+            ? "Loading GitHub data..."
+            : `${data?.name}, repos: ${data?.repositories?.length}`}
+        </span>
+      </div>
+    </div>
+  );
+};
 
-// Resume data interface
-interface ResumeData {
-    name: string;
-    email: string;
-    company: string;
-    bio: string;
-    repositories: {
-      name: string;
-      url: string;
-      created: string;
-      description: string;
-      language: string;
-      stars: number;
-    }[];
-  }
-  
-
-  export const useGithubData = () => {
-    const [resumeData, setResumeData] = useState<ResumeData | null>(null);
-
-    // Fetch resume data from API
-    useEffect(() => {
-        axios
-        .get("/api/github")
-        .then((response) => {
-            setResumeData(response.data);
-        })
-    }, []);
-
-  return { resumeData, };
-  }
+export default GithubData;

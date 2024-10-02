@@ -1,186 +1,116 @@
 // import React from "react";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import ReactMarkdown from "react-markdown";
-import { useGithubData } from "./githubdata";
-import jsPDF from "jspdf";
-import {
-  useMakeCopilotReadable,
-  useMakeCopilotActionable,
-} from "@copilotkit/react-core";
+import { toast } from "react-toastify";
+import { CopilotChat } from "@copilotkit/react-ui";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
+import { CopilotContext } from "@/context/CopilotContextProvider";
+import { useGithubData } from "../hooks/useGithub";
+import PdfUpload from "./PdfUpload";
+import GithubData from "./GithubData";
+
+import "./resume.css";
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export const CoverLetterAndResume = () => {
-  const { resumeData } = useGithubData();
-  const [createCoverLetterAndResume, setCreateCoverLetterAndResume] = useState({
-    letter: "",
-    resume: "",
-  });
+  const { githubData, isLoading } = useGithubData();
 
-  useMakeCopilotReadable(JSON.stringify(resumeData));
-
-  useMakeCopilotActionable(
-    {
-      name: "createCoverLetterAndResume",
-      description:
-        "Create a cover letter and resume for a software developer job application.",
-      argumentAnnotations: [
-        {
-          name: "coverLetterMarkdown",
-          type: "string",
-          description:
-            "Markdown text for a cover letter to introduce yourself and briefly summarize your professional background as a software developer.",
-          required: true,
-        },
-        {
-          name: "resumeMarkdown",
-          type: "string",
-          description:
-            "Markdown text for a resume that displays your professional background and relevant skills.",
-          required: true,
-        },
-      ],
-      implementation: async (coverLetterMarkdown, resumeMarkdown) => {
-        setCreateCoverLetterAndResume((prevState) => ({
-          ...prevState,
-          letter: coverLetterMarkdown,
-          resume: resumeMarkdown,
-        }));
-      },
-    },
-    []
-  );
-
-  function addTextToPDF(doc: any, text: any, x: any, y: any, maxWidth: any) {
-    // Split the text into lines
-    const lines = doc.splitTextToSize(text, maxWidth);
-
-    // Add lines to the document
-    doc.text(lines, x, y);
-  }
-
-  useMakeCopilotActionable(
-    {
-      name: "downloadPdfs",
-      description: "Download pdfs of the cover letter and resume.",
-      argumentAnnotations: [
-        {
-          name: "coverLetterPdfA4",
-          type: "string",
-          description:
-            "A Pdf that contains the cover letter converted from markdown text and fits A4 paper.",
-          required: true,
-        },
-        {
-          name: "resumePdfA4Paper",
-          type: "string",
-          description:
-            "A Pdf that contains the resume converted from markdown text and fits A4 paper.",
-          required: true,
-        },
-      ],
-      implementation: async () => {
-        const marginLeft = 10;
-        const marginTop = 10;
-        const maxWidth = 180;
-
-        const coverLetterDoc = new jsPDF();
-        addTextToPDF(
-          coverLetterDoc,
-          createCoverLetterAndResume.letter,
-          marginLeft,
-          marginTop,
-          maxWidth
-        );
-        coverLetterDoc.save("coverLetter.pdf");
-
-        const resumeDoc = new jsPDF();
-        addTextToPDF(
-          resumeDoc,
-          createCoverLetterAndResume.resume,
-          marginLeft,
-          marginTop,
-          maxWidth
-        );
-        resumeDoc.save("resume.pdf");
-      },
-    },
-    [createCoverLetterAndResume]
-  );
-
-  // Update Cover Letter
-  const updateLetter = createCoverLetterAndResume.letter;
-
-  useMakeCopilotReadable("Cover Letter:" + JSON.stringify(updateLetter));
-
-  useMakeCopilotActionable(
-    {
-      name: "updateCoverLetter",
-      description:
-        "Update cover letter for a software developer job application.",
-      argumentAnnotations: [
-        {
-          name: "updateCoverLetterMarkdown",
-          type: "string",
-          description:
-            "Update markdown text for a cover letter to introduce yourself and briefly summarize your professional background as a software developer.",
-          required: true,
-        },
-      ],
-      implementation: async (updatedCoverLetterMarkdown) => {
-        setCreateCoverLetterAndResume((prevState) => ({
-          ...prevState,
-          letter: updatedCoverLetterMarkdown,
-        }));
-      },
-    },
-    []
-  );
-
-  // Update Resume
-  const updateResume = createCoverLetterAndResume.resume;
-
-  useMakeCopilotReadable("Resume:" + JSON.stringify(updateResume));
-
-  useMakeCopilotActionable(
-    {
-      name: "updateResume",
-      description: "Update resume for a software developer job application.",
-      argumentAnnotations: [
-        {
-          name: "updateResumeMarkdown",
-          type: "string",
-          description:
-            "Update markdown text for a resume that displays your professional background and relevant skills.",
-          required: true,
-        },
-      ],
-      implementation: async (updatedResumeMarkdown) => {
-        setCreateCoverLetterAndResume((prevState) => ({
-          ...prevState,
-          resume: updatedResumeMarkdown,
-        }));
-      },
-    },
-    []
-  );
-
-  return <CoverLetterResume {...createCoverLetterAndResume} />;
-};
-
-type CoverLetterResumeProps = {
-  letter: string;
-  resume: string;
-};
-
-const CoverLetterResume = ({ letter, resume }: CoverLetterResumeProps) => {
   return (
-    <div className="px-4 sm:px-6 lg:px-8 bg-slate-50 py-4">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-3xl font-semibold leading-6 text-gray-900">
-            ResumeBuilder
-          </h1>
+    <div className="flex flex-col h-screen">
+      <div>
+        <div className="px-4 sm:px-6 lg:px-8 bg-slate-50 py-4">
+          <div className="sm:flex-auto">
+            <h1 className="text-3xl font-semibold leading-6 text-gray-900">
+              ResumeBuilder
+            </h1>
+          </div>
+        </div>
+        <div className="sm:flex p-4 gap-8">
+          <PdfUpload />
+
+          <GithubData data={githubData} isLoading={isLoading} />
         </div>
       </div>
+
+      <div className="flex flex-grow">
+        <div className="w-full p-4 rounded-lg bg-white">
+          <TabGroup>
+            <TabList className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    "w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg",
+                    "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                    selected
+                      ? "bg-white shadow"
+                      : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                  )
+                }
+              >
+                Master your resume
+              </Tab>
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    "w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg",
+                    "focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60",
+                    selected
+                      ? "bg-white shadow"
+                      : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                  )
+                }
+              >
+                Create Cover letter
+              </Tab>
+            </TabList>
+            <TabPanels className="mt-2">
+              <TabPanel className="bg-white rounded-xl p-3">
+                <Resume />
+              </TabPanel>
+              <TabPanel className="bg-white rounded-xl p-3">
+                <CoverLetter />
+              </TabPanel>
+            </TabPanels>
+          </TabGroup>
+        </div>
+        <div className="max-h-screen-minus-100">
+          <CopilotChat
+            labels={{
+              title: "Your Assistant",
+              initial: "Hi! 👋 Let's do it",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+const CoverLetter = () => {
+  const {
+    coverLetter = "",
+    jobDescription,
+    updateJobDescription = () => {},
+  } = useContext(CopilotContext) || {};
+
+  return (
+    <div>
+      <h2 className="text-lg font-semibold leading-6 text-gray-900 mb-4 p-2">
+        Insert job description
+      </h2>
+      <textarea
+        className="p-2"
+        id="jobDescription"
+        value={jobDescription}
+        onChange={event => {
+          updateJobDescription(event.target.value);
+        }}
+        rows={10}
+        cols={113}
+      />
       {/* Cover Letter Start */}
       <div className="mt-8 flow-root bg-slate-200">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -188,10 +118,19 @@ const CoverLetterResume = ({ letter, resume }: CoverLetterResumeProps) => {
             <div>
               <h2 className="text-lg font-semibold leading-6 text-gray-900 mb-4 p-2">
                 Cover Letter
+                <ClipboardDocumentIcon
+                  className="h-5 w-5 ml-2 inline cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(coverLetter).then(() => {
+                      toast.success("Copied to clipboard");
+                    });
+                  }}
+                />
               </h2>
+
               <div className="min-w-full divide-y divide-gray-300 p-2">
                 <div className="divide-y divide-gray-200 bg-white p-2">
-                  <ReactMarkdown>{letter}</ReactMarkdown>
+                  <ReactMarkdown>{coverLetter}</ReactMarkdown>
                 </div>
               </div>
             </div>
@@ -213,8 +152,8 @@ const CoverLetterResume = ({ letter, resume }: CoverLetterResumeProps) => {
                   <textarea
                     className="p-2"
                     id="coverLetter"
-                    value={letter}
-                    rows={20}
+                    defaultValue={coverLetter}
+                    rows={10}
                     cols={113}
                   />
                 </div>
@@ -223,51 +162,61 @@ const CoverLetterResume = ({ letter, resume }: CoverLetterResumeProps) => {
           </div>
         </div>
       </div>
-      {/* Cover Letter Preview End */}
-      {/* Resume Start */}
-      <div className="mt-8 flow-root bg-slate-200">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <h2 className="text-lg font-semibold leading-6 text-gray-900 mb-4 p-2">
-              Resume
-            </h2>
-            <div className="min-w-full divide-y divide-gray-300">
-              {/* <Thead /> */}
-              <div className="divide-y divide-gray-200 bg-white">
-                <ReactMarkdown>{resume}</ReactMarkdown>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Resume End */}
-      {/* Cover Letter Preview Start */}
-      <div className="mt-8 flow-root bg-slate-200">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div>
+    </div>
+  );
+};
+const Resume = () => {
+  const { resume = "" } = useContext(CopilotContext) || {};
+
+  return (
+    <div>
+      <div className="px-4 sm:px-6 lg:px-8 bg-slate-50 py-4">
+        {/* Cover Letter Preview End */}
+        {/* Resume Start */}
+        <div className="mt-8 flow-root bg-slate-200">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <h2 className="text-lg font-semibold leading-6 text-gray-900 mb-4 p-2">
-                Cover Letter Preview
+                Resume
               </h2>
               <div className="min-w-full divide-y divide-gray-300">
                 {/* <Thead /> */}
                 <div className="divide-y divide-gray-200 bg-white">
-                  {/* {letter} */}
-                  {/* <ReactMarkdown>{letter}</ReactMarkdown> */}
-                  <textarea
-                    className="p-2"
-                    id="resume"
-                    value={resume}
-                    rows={20}
-                    cols={113}
-                  />
+                  <ReactMarkdown>{resume}</ReactMarkdown>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {/* Resume End */}
+        {/* Cover Letter Preview Start */}
+        <div className="mt-8 flow-root bg-slate-200">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <div>
+                <h2 className="text-lg font-semibold leading-6 text-gray-900 mb-4 p-2">
+                  Resume Preview
+                </h2>
+                <div className="min-w-full divide-y divide-gray-300">
+                  {/* <Thead /> */}
+                  <div className="divide-y divide-gray-200 bg-white">
+                    {/* {letter} */}
+                    {/* <ReactMarkdown>{letter}</ReactMarkdown> */}
+                    <textarea
+                      className="p-2"
+                      id="resume"
+                      defaultValue={resume}
+                      rows={10}
+                      cols={113}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Cover Letter Preview End */}
       </div>
-      {/* Cover Letter Preview End */}
     </div>
   );
 };
