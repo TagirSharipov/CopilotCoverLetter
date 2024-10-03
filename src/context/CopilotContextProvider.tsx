@@ -125,7 +125,7 @@ export const CopilotContextProvider = ({
   }
 
   useCopilotChatSuggestions({
-    instructions: `Ask me to create a resume for a software developer job application, suggest me to add  github repos to resume and cover letter. Ask me to generate a cover letter basing on a job description`,
+    instructions: `Ask me to create a resume for a software developer job application, suggest me to add  github repos to resume. Ask me to generate a cover letter basing on a job description`,
   });
 
   return (

@@ -21,23 +21,21 @@ export const CoverLetterAndResume = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <div>
-        <div className="px-4 sm:px-6 lg:px-8 bg-slate-50 py-4">
-          <div className="sm:flex-auto">
-            <h1 className="text-3xl font-semibold leading-6 text-gray-900">
-              ResumeBuilder
-            </h1>
-          </div>
-        </div>
-        <div className="sm:flex p-4 gap-8">
-          <PdfUpload />
-
-          <GithubData data={githubData} isLoading={isLoading} />
+      <div className="px-4 sm:px-6 lg:px-8 bg-slate-50 py-4">
+        <div className="sm:flex-auto">
+          <h1 className="text-3xl font-semibold leading-6 text-gray-900">
+            Cover Letter and Resume Generator
+          </h1>
         </div>
       </div>
+      <div className="sm:flex p-4 gap-8">
+        <PdfUpload />
 
-      <div className="flex flex-grow">
-        <div className="w-full p-4 rounded-lg bg-white">
+        <GithubData data={githubData} isLoading={isLoading} />
+      </div>
+
+      <div className="flex">
+        <div className="p-4 rounded-lg bg-white flex-grow">
           <TabGroup>
             <TabList className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
               <Tab
@@ -102,14 +100,13 @@ const CoverLetter = () => {
         Insert job description
       </h2>
       <textarea
-        className="p-2"
+        className="p-2 w-full"
         id="jobDescription"
         value={jobDescription}
         onChange={event => {
           updateJobDescription(event.target.value);
         }}
         rows={10}
-        cols={113}
       />
       {/* Cover Letter Start */}
       <div className="mt-8 flow-root bg-slate-200">
@@ -148,13 +145,11 @@ const CoverLetter = () => {
               </h2>
               <div className="min-w-full divide-y divide-gray-300">
                 {/* <Thead /> */}
-                <div className="divide-y divide-gray-200 bg-white">
+                <div className="divide-y divide-gray-200 bg-white w-full">
                   <textarea
-                    className="p-2"
+                    className="p-2 w-full"
                     id="coverLetter"
                     defaultValue={coverLetter}
-                    rows={10}
-                    cols={113}
                   />
                 </div>
               </div>
@@ -203,11 +198,10 @@ const Resume = () => {
                     {/* {letter} */}
                     {/* <ReactMarkdown>{letter}</ReactMarkdown> */}
                     <textarea
-                      className="p-2"
+                      className="p-2 w-full"
                       id="resume"
                       defaultValue={resume}
                       rows={10}
-                      cols={113}
                     />
                   </div>
                 </div>

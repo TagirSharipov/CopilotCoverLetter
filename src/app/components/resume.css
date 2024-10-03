@@ -1,3 +1,4 @@
 .max-h-screen-minus-100 {
   display: flex;
+  width: 350px;
 }
