@@ -18,6 +18,8 @@ CopilotKit-Powered Resume and Cover Letter Generator is a web application that h
 4. **Generate Cover Letter**: Use the AI-powered tool to generate a cover letter tailored to the job you are applying for.
 5. **Master Your Resume or Cover Letter**: Utilize CopilotChat to refine and perfect your resume or cover letter with expert suggestions.
 
+## Demo
+
 ![Demo](public/usage.gif)
 
 ## Technologies Used
