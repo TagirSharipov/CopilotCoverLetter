@@ -2,6 +2,10 @@
 
 CopilotKit-Powered Resume and Cover Letter Generator is a web application that helps users create and manage their resumes and cover letters. The application leverages AI to provide suggestions and improvements for your resume and cover letter content.
 
+I wanted to test CopilotKit and simplify the job application process. Creating cover letters can be a tedious task, so AI can be a great help in preparing a first draft to respond to a vacancy.
+
+It takes your resume and the job description and creates a cover letter which highlights your skills and explains why you are a perfect fit for the position.
+
 ## Features
 
 - **Resume Upload**: Upload your resume in PDF format and extract text content.
@@ -44,4 +48,4 @@ CopilotKit-Powered Resume and Cover Letter Generator is a web application that h
 
 ## Inspiration
 
-This project was inspired by AIPoweredResumeBuilder. ```
+This project was inspired by [AIPoweredResumeBuilder](https://github.com/TheGreatBonnie/AIPoweredResumeBuilder).
